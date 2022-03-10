@@ -11,3 +11,4 @@ keras
 onnx2keras
 onnx
 tensorflow
+dvc[gdrive]
