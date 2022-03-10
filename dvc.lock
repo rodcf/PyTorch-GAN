@@ -1,0 +1,38 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: python -m src.train --model gan --n_epochs 10
+    deps:
+    - path: src/models.py
+      md5: 3fb1a94e82f5618e7bc61b3f072b3f50
+      size: 1618
+    - path: src/train.py
+      md5: 7832d27242cdbeca09f947d4859a2325
+      size: 5453
+    params:
+      params.yaml:
+        model: gan
+        n_epochs: 10
+    outs:
+    - path: results/gan/weights
+      md5: 864abadada7705828af6f6e88253f324.dir
+      size: 12117934
+      nfiles: 2
+  crosslid:
+    cmd: python -m src.calculate_crosslid
+    deps:
+    - path: results/gan/weights
+      md5: 864abadada7705828af6f6e88253f324.dir
+      size: 12117934
+      nfiles: 2
+    - path: src/calculate_crosslid.py
+      md5: f264a0f5451f9e16da3d5147fa9f384e
+      size: 857
+    - path: src/crosslid/
+      md5: e470025b9b7eb9d1af731ca1809dd842.dir
+      size: 14448554
+      nfiles: 15
+    outs:
+    - path: metrics.json
+      md5: eb7339dead8aeb3242b8b2a33ca60a10
+      size: 35

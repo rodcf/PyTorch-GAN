@@ -11,7 +11,7 @@ from torch.autograd import Variable
 
 import torch
 
-from models import get_models
+from src.models import get_models
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", type=str, default="gan", help="which model to train. options are 'gan', 'cgan' or 'dcgan'")
@@ -24,10 +24,10 @@ parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads 
 parser.add_argument("--latent_dim", type=int, default=100, help="dimensionality of the latent space")
 parser.add_argument("--img_size", type=int, default=28, help="size of each image dimension")
 parser.add_argument("--channels", type=int, default=1, help="number of image channels")
-parser.add_argument("--sample_interval", type=int, default=400, help="interval betwen image samples")
+parser.add_argument("--sample_interval", type=int, default=1000, help="interval betwen image samples")
 parser.add_argument("--mnist_location", type=str, default="data/mnist", help="download location of mnist images")
 parser.add_argument("--results_location", type=str, default="results/", help="directory in which image samples and weights are stored")
-parser.add_argument("--checkpoints_interval", type=str, default=10, help="how often to save the weights")
+parser.add_argument("--checkpoints_interval", type=str, default=50, help="how often to save the weights")
 opt = parser.parse_args()
 print(opt)
 

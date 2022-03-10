@@ -1,0 +1,20 @@
+stages:
+  train:
+    cmd: python -m src.train --model ${model} --n_epochs ${n_epochs}
+    deps:
+      - src/train.py
+      - src/models.py
+    outs:
+      - results/${model}/weights
+    params:
+      - model
+      - n_epochs
+
+  crosslid:
+    cmd: python -m src.calculate_crosslid
+    deps:
+      - src/crosslid/
+      - src/calculate_crosslid.py
+      - results/${model}/weights
+    metrics:
+      - metrics.json
