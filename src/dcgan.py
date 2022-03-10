@@ -42,9 +42,9 @@ def weights_init_normal(m):
         torch.nn.init.constant_(m.bias.data, 0.0)
 
 
-class Generator(nn.Module):
+class DCGAN_Generator(nn.Module):
     def __init__(self):
-        super(Generator, self).__init__()
+        super(DCGAN_Generator, self).__init__()
 
         self.init_size = opt.img_size // 4
         self.l1 = nn.Sequential(nn.Linear(opt.latent_dim, 128 * self.init_size ** 2))
@@ -70,9 +70,9 @@ class Generator(nn.Module):
         return img
 
 
-class Discriminator(nn.Module):
+class DCGAN_Discriminator(nn.Module):
     def __init__(self):
-        super(Discriminator, self).__init__()
+        super(DCGAN_Discriminator, self).__init__()
 
         def discriminator_block(in_filters, out_filters, bn=True):
             block = [nn.Conv2d(in_filters, out_filters, 3, 2, 1), nn.LeakyReLU(0.2, inplace=True), nn.Dropout2d(0.25)]
@@ -103,8 +103,8 @@ class Discriminator(nn.Module):
 adversarial_loss = torch.nn.BCELoss()
 
 # Initialize generator and discriminator
-generator = Generator()
-discriminator = Discriminator()
+generator = DCGAN_Generator()
+discriminator = DCGAN_Discriminator()
 
 if cuda:
     generator.cuda()
@@ -151,7 +151,7 @@ for epoch in range(opt.n_epochs):
         real_imgs = Variable(imgs.type(Tensor))
 
         # -----------------
-        #  Train Generator
+        #  Train DCGAN_Generator
         # -----------------
 
         optimizer_G.zero_grad()
@@ -169,7 +169,7 @@ for epoch in range(opt.n_epochs):
         optimizer_G.step()
 
         # ---------------------
-        #  Train Discriminator
+        #  Train DCGAN_Discriminator
         # ---------------------
 
         optimizer_D.zero_grad()

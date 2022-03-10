@@ -36,9 +36,9 @@ img_shape = (opt.channels, opt.img_size, opt.img_size)
 cuda = True if torch.cuda.is_available() else False
 
 
-class Generator(nn.Module):
+class CGAN_Generator(nn.Module):
     def __init__(self):
-        super(Generator, self).__init__()
+        super(CGAN_Generator, self).__init__()
 
         self.label_emb = nn.Embedding(opt.n_classes, opt.n_classes)
 
@@ -66,9 +66,9 @@ class Generator(nn.Module):
         return img
 
 
-class Discriminator(nn.Module):
+class CGAN_Discriminator(nn.Module):
     def __init__(self):
-        super(Discriminator, self).__init__()
+        super(CGAN_Discriminator, self).__init__()
 
         self.label_embedding = nn.Embedding(opt.n_classes, opt.n_classes)
 
@@ -95,8 +95,8 @@ class Discriminator(nn.Module):
 adversarial_loss = torch.nn.MSELoss()
 
 # Initialize generator and discriminator
-generator = Generator()
-discriminator = Discriminator()
+generator = CGAN_Generator()
+discriminator = CGAN_Discriminator()
 
 if cuda:
     generator.cuda()
@@ -155,7 +155,7 @@ for epoch in range(opt.n_epochs):
         labels = Variable(labels.type(LongTensor))
 
         # -----------------
-        #  Train Generator
+        #  Train CGAN_Generator
         # -----------------
 
         optimizer_G.zero_grad()
@@ -175,7 +175,7 @@ for epoch in range(opt.n_epochs):
         optimizer_G.step()
 
         # ---------------------
-        #  Train Discriminator
+        #  Train CGAN_Discriminator
         # ---------------------
 
         optimizer_D.zero_grad()

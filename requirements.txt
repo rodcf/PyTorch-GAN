@@ -6,3 +6,8 @@ scipy
 pillow
 urllib3
 scikit-image
+scikit-learn
+keras
+onnx2keras
+onnx
+tensorflow

@@ -1,7 +1,6 @@
 import argparse
 import os
 import numpy as np
-import math
 
 import torchvision.transforms as transforms
 from torchvision.utils import save_image
@@ -10,14 +9,13 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from torch.autograd import Variable
 
-import torch.nn as nn
-import torch.nn.functional as F
 import torch
 
-os.makedirs("images", exist_ok=True)
+from models import get_models
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_epochs", type=int, default=200, help="number of epochs of training")
+parser.add_argument("--model", type=str, default="gan", help="which model to train. options are 'gan', 'cgan' or 'dcgan'")
+parser.add_argument("--n_epochs", type=int, default=20, help="number of epochs of training")
 parser.add_argument("--batch_size", type=int, default=64, help="size of the batches")
 parser.add_argument("--lr", type=float, default=0.0002, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
@@ -27,66 +25,27 @@ parser.add_argument("--latent_dim", type=int, default=100, help="dimensionality 
 parser.add_argument("--img_size", type=int, default=28, help="size of each image dimension")
 parser.add_argument("--channels", type=int, default=1, help="number of image channels")
 parser.add_argument("--sample_interval", type=int, default=400, help="interval betwen image samples")
+parser.add_argument("--mnist_location", type=str, default="data/mnist", help="download location of mnist images")
+parser.add_argument("--results_location", type=str, default="results/", help="directory in which image samples and weights are stored")
+parser.add_argument("--checkpoints_interval", type=str, default=10, help="how often to save the weights")
 opt = parser.parse_args()
 print(opt)
+
+results_location = f"{opt.results_location}/{opt.model}"
+
+os.makedirs(f"{results_location}/images", exist_ok=True)
+
+os.makedirs(f"{results_location}/weights", exist_ok=True)
 
 img_shape = (opt.channels, opt.img_size, opt.img_size)
 
 cuda = True if torch.cuda.is_available() else False
 
-
-class Generator(nn.Module):
-    def __init__(self):
-        super(Generator, self).__init__()
-
-        def block(in_feat, out_feat, normalize=True):
-            layers = [nn.Linear(in_feat, out_feat)]
-            if normalize:
-                layers.append(nn.BatchNorm1d(out_feat, 0.8))
-            layers.append(nn.LeakyReLU(0.2, inplace=True))
-            return layers
-
-        self.model = nn.Sequential(
-            *block(opt.latent_dim, 128, normalize=False),
-            *block(128, 256),
-            *block(256, 512),
-            *block(512, 1024),
-            nn.Linear(1024, int(np.prod(img_shape))),
-            nn.Tanh()
-        )
-
-    def forward(self, z):
-        img = self.model(z)
-        img = img.view(img.size(0), *img_shape)
-        return img
-
-
-class Discriminator(nn.Module):
-    def __init__(self):
-        super(Discriminator, self).__init__()
-
-        self.model = nn.Sequential(
-            nn.Linear(int(np.prod(img_shape)), 512),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.Linear(512, 256),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.Linear(256, 1),
-            nn.Sigmoid(),
-        )
-
-    def forward(self, img):
-        img_flat = img.view(img.size(0), -1)
-        validity = self.model(img_flat)
-
-        return validity
-
-
 # Loss function
 adversarial_loss = torch.nn.BCELoss()
 
 # Initialize generator and discriminator
-generator = Generator()
-discriminator = Discriminator()
+generator, discriminator = get_models(opt.model, img_shape, opt.latent_dim)
 
 if cuda:
     generator.cuda()
@@ -94,10 +53,10 @@ if cuda:
     adversarial_loss.cuda()
 
 # Configure data loader
-os.makedirs("../../data/mnist", exist_ok=True)
-dataloader = torch.utils.data.DataLoader(
+os.makedirs(opt.mnist_location, exist_ok=True)
+dataloader = DataLoader(
     datasets.MNIST(
-        "../../data/mnist",
+        opt.mnist_location,
         train=True,
         download=True,
         transform=transforms.Compose(
@@ -129,7 +88,7 @@ for epoch in range(opt.n_epochs):
         real_imgs = Variable(imgs.type(Tensor))
 
         # -----------------
-        #  Train Generator
+        #  Train GAN_Generator
         # -----------------
 
         optimizer_G.zero_grad()
@@ -147,7 +106,7 @@ for epoch in range(opt.n_epochs):
         optimizer_G.step()
 
         # ---------------------
-        #  Train Discriminator
+        #  Train GAN_Discriminator
         # ---------------------
 
         optimizer_D.zero_grad()
@@ -167,4 +126,12 @@ for epoch in range(opt.n_epochs):
 
         batches_done = epoch * len(dataloader) + i
         if batches_done % opt.sample_interval == 0:
-            save_image(gen_imgs.data[:25], "images/%d.png" % batches_done, nrow=5, normalize=True)
+            save_image(gen_imgs.data[:25], f"{results_location}/images/{batches_done}.png", nrow=5, normalize=True)
+
+        if ((epoch + 1) % opt.checkpoints_interval == 0 or (epoch + 1) % opt.n_epochs == 0) and (i+1) == len(dataloader):
+            if epoch + 1 == opt.n_epochs:
+                torch.save(generator.state_dict(), f"{results_location}/weights/last.pth")
+                torch.onnx.export(generator, z, f"{results_location}/weights/last.onnx", input_names = ['input'], output_names = ['output'])
+            else:
+                torch.save(generator.state_dict(), f"{results_location}/weights/{epoch+1}.pth")
+                torch.onnx.export(generator, z, f"{results_location}/weights/{epoch+1}.onnx", input_names = ['input'], output_names = ['output'])
