@@ -21,18 +21,59 @@ stages:
   crosslid:
     cmd: python -m src.calculate_crosslid
     deps:
-    - path: results/gan/weights
-      md5: 1d731f36f1a3ca840b5ac7a7ee9b7ea6.dir
-      size: 24236508
-      nfiles: 4
+    - path: results/
+      md5: 037b2a6447ddbe659beff851f4b210fc.dir
+      size: 53924184
+      nfiles: 19
     - path: src/calculate_crosslid.py
-      md5: f264a0f5451f9e16da3d5147fa9f384e
-      size: 857
+      md5: 873653f1e6b13268ec3635f4087c513a
+      size: 1019
     - path: src/crosslid/
-      md5: e470025b9b7eb9d1af731ca1809dd842.dir
-      size: 14448554
-      nfiles: 15
+      md5: 82d77613352d731706d47142a83a87b9.dir
+      size: 14448829
+      nfiles: 16
+    params:
+      params.yaml:
+        models:
+        - gan
+        - dcgan
     outs:
     - path: metrics.json
-      md5: 95ab90206be532b85a2a5ce4e0be4b9d
-      size: 35
+      md5: ed77c614c3dd92f61bf32d66d9913abc
+      size: 73
+  train@gan:
+    cmd: python -m src.train --model gan --n_epochs 5 --checkpoints_interval 2
+    deps:
+    - path: src/models.py
+      md5: 677b31cc22d1a1b02a819a686101d0a0
+      size: 4400
+    - path: src/train.py
+      md5: 40c8bf65cd0d54c63bce20d01d315ff8
+      size: 5252
+    params:
+      params.yaml:
+        gan: gan
+        n_epochs: 5
+    outs:
+    - path: results/gan/weights
+      md5: 3c746100dcf33c58c4304865382d9d34.dir
+      size: 36354762
+      nfiles: 6
+  train@dcgan:
+    cmd: python -m src.train --model dcgan --n_epochs 5 --checkpoints_interval 2
+    deps:
+    - path: src/models.py
+      md5: 677b31cc22d1a1b02a819a686101d0a0
+      size: 4400
+    - path: src/train.py
+      md5: 40c8bf65cd0d54c63bce20d01d315ff8
+      size: 5252
+    params:
+      params.yaml:
+        dcgan: dcgan
+        n_epochs: 5
+    outs:
+    - path: results/dcgan/weights
+      md5: 8a0e6618ecc4df34c9e7ba113fa4fe0f.dir
+      size: 17427102
+      nfiles: 6
