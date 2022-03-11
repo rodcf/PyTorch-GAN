@@ -24,10 +24,9 @@ parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads 
 parser.add_argument("--latent_dim", type=int, default=100, help="dimensionality of the latent space")
 parser.add_argument("--img_size", type=int, default=28, help="size of each image dimension")
 parser.add_argument("--channels", type=int, default=1, help="number of image channels")
-parser.add_argument("--sample_interval", type=int, default=1000, help="interval betwen image samples")
 parser.add_argument("--mnist_location", type=str, default="data/mnist", help="download location of mnist images")
 parser.add_argument("--results_location", type=str, default="results/", help="directory in which image samples and weights are stored")
-parser.add_argument("--checkpoints_interval", type=str, default=50, help="how often to save the weights")
+parser.add_argument("--checkpoints_interval", type=int, default=20, help="how often to save the images and weights")
 opt = parser.parse_args()
 print(opt)
 
@@ -124,10 +123,6 @@ for epoch in range(opt.n_epochs):
             % (epoch, opt.n_epochs, i, len(dataloader), d_loss.item(), g_loss.item())
         )
 
-        batches_done = epoch * len(dataloader) + i
-        if batches_done % opt.sample_interval == 0:
-            save_image(gen_imgs.data[:25], f"{results_location}/images/{batches_done}.png", nrow=5, normalize=True)
-
         if ((epoch + 1) % opt.checkpoints_interval == 0 or (epoch + 1) % opt.n_epochs == 0) and (i+1) == len(dataloader):
             if epoch + 1 == opt.n_epochs:
                 torch.save(generator.state_dict(), f"{results_location}/weights/last.pth")
@@ -135,3 +130,4 @@ for epoch in range(opt.n_epochs):
             else:
                 torch.save(generator.state_dict(), f"{results_location}/weights/{epoch+1}.pth")
                 torch.onnx.export(generator, z, f"{results_location}/weights/{epoch+1}.onnx", input_names = ['input'], output_names = ['output'])
+            save_image(gen_imgs.data[:25], f"{results_location}/images/{epoch+1}.png", nrow=5, normalize=True)

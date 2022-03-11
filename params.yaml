@@ -1,2 +1,3 @@
 model: "gan"
 n_epochs: 10
+checkpoints_interval: 5

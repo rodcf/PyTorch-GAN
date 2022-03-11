@@ -4,8 +4,6 @@
 *.hdf5
 .DS_Store
 
-!metrics.json
-
 data/*/
 
 results/

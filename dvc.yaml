@@ -1,6 +1,6 @@
 stages:
   train:
-    cmd: python -m src.train --model ${model} --n_epochs ${n_epochs}
+    cmd: python -m src.train --model ${model} --n_epochs ${n_epochs} --checkpoints_interval ${checkpoints_interval}
     deps:
       - src/train.py
       - src/models.py
