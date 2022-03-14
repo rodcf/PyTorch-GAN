@@ -1,4 +1,4 @@
-torch>=0.4.0
+torch
 torchvision
 matplotlib
 numpy
@@ -9,6 +9,7 @@ scikit-image
 scikit-learn
 intel-tensorflow
 keras
-onnx2keras
+onnxruntime-gpu
 onnx
+onnx2keras
 dvc[gdrive]

@@ -1,8 +1,10 @@
 models: 
   - gan
   - dcgan
+  - cgan
 n_epochs: 5
 checkpoints_interval: 2
 
 gan: "gan"
 dcgan: "dcgan"
+cgan: "cgan"

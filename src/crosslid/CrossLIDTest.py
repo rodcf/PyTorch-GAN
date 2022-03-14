@@ -24,8 +24,8 @@ class CrossLID:
         self.X_real_features = get_deep_features(X_real)
     
 
-    def calculate_cross_lid(self, onnx_path: str = ""):
-        X_fake = get_fake_images(onnx_path, self.sample_size)
+    def calculate_cross_lid(self, model, onnx_path: str = ""):
+        X_fake = get_fake_images(onnx_path, model, self.sample_size)
         X_fake = X_fake.reshape((self.sample_size,28,28,1))
         X_fake_features = get_deep_features(X_fake)
         cross_lid = compute_crosslid(X_fake_features, self.X_real_features, k=100, batch_size=1000)
