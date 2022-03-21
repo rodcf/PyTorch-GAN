@@ -19,80 +19,80 @@ stages:
       size: 24236508
       nfiles: 4
   crosslid:
-    cmd: python -m src.calculate_crosslid
+    cmd: python3 -m src.calculate_crosslid
     deps:
     - path: results/
-      md5: 6ffacca65412c3cd23312cc707038008.dir
-      size: 90917397
-      nfiles: 29
+      md5: 8e2029bcedc0b9f04de75efc01cc364c.dir
+      size: 302083372
+      nfiles: 90
     - path: src/calculate_crosslid.py
       md5: 0f407e81eca4295ad69beb4d9a3f6634
-      size: 1031
+      size: 1060
     - path: src/crosslid/
-      md5: 41fb54ac11cbea3a93f3d2e684766a1e.dir
-      size: 14450360
-      nfiles: 16
+      md5: 11d21611f7fede7848d3791f3d6829ee.dir
+      size: 14441024
+      nfiles: 10
     params:
       params.yaml:
         models:
-        - gan
-        - dcgan
         - cgan
     outs:
     - path: metrics.json
-      md5: d75960cc48a3dd168603cc29de8f115d
-      size: 108
+      md5: 15620644b283226628c14895a13cb66b
+      size: 37
+      isexec: true
   train@gan:
-    cmd: python -m src.train --model gan --n_epochs 5 --checkpoints_interval 2
+    cmd: python3 -m src.train --model gan --n_epochs 200 --checkpoints_interval 20
     deps:
     - path: src/models.py
       md5: bad6ef81a3d92f6530229eaf78b9633b
-      size: 6530
+      size: 6708
     - path: src/train.py
       md5: 8e2c83c0a559d19c1ef0f2bc46c72827
-      size: 8278
+      size: 8475
     params:
       params.yaml:
         gan: gan
-        n_epochs: 5
+        n_epochs: 200
     outs:
     - path: results/gan/weights
-      md5: 7ddbbdaa033c3bef659d2a4471d70340.dir
-      size: 36459123
-      nfiles: 6
+      md5: e19b6a2a495d2d177632877bc8f45873.dir
+      size: 121469510
+      nfiles: 20
   train@dcgan:
-    cmd: python -m src.train --model dcgan --n_epochs 5 --checkpoints_interval 2
+    cmd: python3 -m src.train --model dcgan --n_epochs 200 --checkpoints_interval
+      20
     deps:
     - path: src/models.py
       md5: bad6ef81a3d92f6530229eaf78b9633b
-      size: 6530
+      size: 6708
     - path: src/train.py
       md5: 8e2c83c0a559d19c1ef0f2bc46c72827
-      size: 8278
+      size: 8475
     params:
       params.yaml:
         dcgan: dcgan
-        n_epochs: 5
+        n_epochs: 200
     outs:
     - path: results/dcgan/weights
-      md5: e50d8c2d18f603506720831b932c0fc0.dir
-      size: 17495295
-      nfiles: 6
+      md5: 1d5f951e95e613e0f9ecc92f13bd2580.dir
+      size: 58278000
+      nfiles: 20
   train@cgan:
-    cmd: python -m src.train --model cgan --n_epochs 5 --checkpoints_interval 2
+    cmd: python3 -m src.train --model cgan --n_epochs 200 --checkpoints_interval 20
     deps:
     - path: src/models.py
       md5: bad6ef81a3d92f6530229eaf78b9633b
-      size: 6530
+      size: 6708
     - path: src/train.py
       md5: 8e2c83c0a559d19c1ef0f2bc46c72827
-      size: 8278
+      size: 8475
     params:
       params.yaml:
         cgan: cgan
-        n_epochs: 5
+        n_epochs: 200
     outs:
     - path: results/cgan/weights
-      md5: 5747790cafa1f3565c28a1031052b804.dir
-      size: 36504741
-      nfiles: 6
+      md5: 7bbfdae97ffd7f9b78490363df2e7401.dir
+      size: 121614970
+      nfiles: 20
