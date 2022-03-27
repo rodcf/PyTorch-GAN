@@ -2,23 +2,27 @@ stages:
   train:
     foreach: ${models}
     do:
-      cmd: python -m src.train --model ${item} --n_epochs ${n_epochs} --checkpoints_interval ${checkpoints_interval}
+      cmd: python3 -m src.train --model ${item} --n_epochs ${n_epochs} --checkpoints_interval ${checkpoints_interval}
       deps:
         - src/train.py
         - src/models.py
       outs:
         - results/${item}/weights
+      metrics:
+        - ${item}_time.json:
+            cache: false
       params:
         - ${item}
         - n_epochs
 
   crosslid:
-    cmd: python -m src.calculate_crosslid
+    cmd: python3 -m src.calculate_crosslid
     deps:
       - src/crosslid/
       - src/calculate_crosslid.py
       - results/
     metrics:
-      - metrics.json
+      - metrics.json:
+          cache: false
     params:
-        - models
+      - models

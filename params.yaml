@@ -1,7 +1,7 @@
 models:
   - gan
-  - dcgan
   - cgan
+  - dcgan
 n_epochs: 200
 checkpoints_interval: 20
 

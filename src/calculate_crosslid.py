@@ -16,7 +16,7 @@ parser.add_argument("--metrics_output", type=str, default="metrics.json", help="
 opt = parser.parse_args()
 print(opt)
 
-metric = CrossLID()
+metric = CrossLID(sample_size=20000)
 
 cross_lid_scores = {}
 

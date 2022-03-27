@@ -10,8 +10,12 @@ from torchvision import datasets
 from torch.autograd import Variable
 
 import torch
+import json
 
 from src.models import get_models
+
+from time import perf_counter
+from datetime import timedelta
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", type=str, default="gan", help="which model to train. options are 'gan', 'cgan' or 'dcgan'")
@@ -77,7 +81,7 @@ optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=opt.lr, betas=(opt
 FloatTensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 LongTensor = torch.cuda.LongTensor if cuda else torch.LongTensor
 
-def sample_image(n_row, epoch):
+def sample_image_cgan(n_row, epoch):
     """Saves a grid of generated digits ranging from 0 to n_classes"""
     # Sample noise
     z = Variable(FloatTensor(np.random.normal(0, 1, (n_row ** 2, opt.latent_dim))))
@@ -87,10 +91,16 @@ def sample_image(n_row, epoch):
     gen_imgs = generator(z, labels)
     save_image(gen_imgs.data, f"{results_location}/images/{epoch+1}.png", nrow=n_row, normalize=True)
 
+def sample_image(n_row, epoch):
+    z = Variable(FloatTensor(np.random.normal(0, 1, (n_row ** 2, opt.latent_dim))))
+    gen_imgs = generator(z)
+    save_image(gen_imgs.data, f"{results_location}/images/{epoch+1}.png", nrow=n_row, normalize=True)
 
 # ----------
 #  Training
 # ----------
+
+t1_start = perf_counter()
 
 for epoch in range(opt.n_epochs):
     for i, (imgs, labels) in enumerate(dataloader):
@@ -192,6 +202,18 @@ for epoch in range(opt.n_epochs):
                                     }
                                 )
             if opt.model =='cgan':
-                sample_image(n_row=10, epoch=epoch)
+                sample_image_cgan(n_row=10, epoch=epoch)
             else:
-                save_image(gen_imgs.data[:25], f"{results_location}/images/{epoch+1}.png", nrow=5, normalize=True)
+                sample_image(n_row=10, epoch=epoch)
+
+t1_stop = perf_counter()
+
+time_taken = str(timedelta(seconds=t1_stop-t1_start))
+
+print("Time taken during training:", time_taken)
+
+time = {}
+time[f"{opt.model}_time"] = time_taken
+
+with open(f"{opt.model}_time.json", 'w+') as metrics_file:
+  json.dump(time, metrics_file)
