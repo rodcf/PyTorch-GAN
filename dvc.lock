@@ -22,14 +22,14 @@ stages:
     cmd: python3 -m src.calculate_crosslid
     deps:
     - path: results/
-      md5: e338a1e5ba6e0efff1e8c30010e9409c.dir
-      size: 302807430
+      md5: 3b53f112fd5cd8b6e187d9ba171bad0d.dir
+      size: 302762248
       nfiles: 90
     - path: src/calculate_crosslid.py
       md5: b8228b89be9647d22bd3dbcef5e7fba4
       size: 1077
     - path: src/crosslid/
-      md5: 12ea7f15b33fff36412fc060602be0a1.dir
+      md5: 4f2237d3f41fd6c2aa1e60b496f08c10.dir
       size: 14447454
       nfiles: 14
     params:
@@ -40,7 +40,7 @@ stages:
         - dcgan
     outs:
     - path: metrics.json
-      md5: b171d4acb910c32f247360ef59fe55bd
+      md5: 9ffa3f03742dbe8038308ad280fcdfab
       size: 109
       isexec: true
   train@gan:
@@ -58,11 +58,11 @@ stages:
         n_epochs: 200
     outs:
     - path: gan_time.json
-      md5: 2f748958ce16b25472d55fc10c2451a3
+      md5: 4075c0af0195a664b0df3e4eb711643f
       size: 30
       isexec: true
     - path: results/gan/weights
-      md5: 0c651710e1a78eb3e98cee6bcae22edc.dir
+      md5: 77d88ca2c08255fec38deba15eb17d1a.dir
       size: 121469510
       nfiles: 20
   train@dcgan:
@@ -81,11 +81,11 @@ stages:
         n_epochs: 200
     outs:
     - path: dcgan_time.json
-      md5: d3db844a401452aed6759421d594f6b4
+      md5: 1411cd18bb595d318363f681aa6d8e41
       size: 32
       isexec: true
     - path: results/dcgan/weights
-      md5: e1170b99d506191eaa782c1e88d474b4.dir
+      md5: 3733f72694727bcf2e870571628b1d05.dir
       size: 58278000
       nfiles: 20
   train@cgan:
@@ -103,10 +103,10 @@ stages:
         n_epochs: 200
     outs:
     - path: cgan_time.json
-      md5: af64e040f55fb7204c4fbdd1e08506b3
+      md5: 600363a20c2fb78d5f499aa3b69245a1
       size: 31
       isexec: true
     - path: results/cgan/weights
-      md5: c49d82daec5dc6354d96bb4e378ec360.dir
+      md5: 40f58e7dd2d96835672499a01d4ac8cf.dir
       size: 121614970
       nfiles: 20
