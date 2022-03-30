@@ -22,14 +22,14 @@ stages:
     cmd: python3 -m src.calculate_crosslid
     deps:
     - path: results/
-      md5: 3b53f112fd5cd8b6e187d9ba171bad0d.dir
-      size: 302762248
+      md5: f7d067351300f6e42bb04461e2da701d.dir
+      size: 302767779
       nfiles: 90
     - path: src/calculate_crosslid.py
       md5: b8228b89be9647d22bd3dbcef5e7fba4
       size: 1077
     - path: src/crosslid/
-      md5: 4f2237d3f41fd6c2aa1e60b496f08c10.dir
+      md5: 14c4b6ffa54931ac13fc0446fcc2d22d.dir
       size: 14447454
       nfiles: 14
     params:
@@ -40,8 +40,8 @@ stages:
         - dcgan
     outs:
     - path: metrics.json
-      md5: 9ffa3f03742dbe8038308ad280fcdfab
-      size: 109
+      md5: 9cad702a844fdbdb9fae0ac027fb0db4
+      size: 110
       isexec: true
   train@gan:
     cmd: python3 -m src.train --model gan --n_epochs 200 --checkpoints_interval 20
@@ -58,11 +58,11 @@ stages:
         n_epochs: 200
     outs:
     - path: gan_time.json
-      md5: 4075c0af0195a664b0df3e4eb711643f
+      md5: d6a4320164263282a3a488026dd5b8b4
       size: 30
       isexec: true
     - path: results/gan/weights
-      md5: 77d88ca2c08255fec38deba15eb17d1a.dir
+      md5: 5c7b99855c3df3c448c82887f1714eeb.dir
       size: 121469510
       nfiles: 20
   train@dcgan:
@@ -81,11 +81,11 @@ stages:
         n_epochs: 200
     outs:
     - path: dcgan_time.json
-      md5: 1411cd18bb595d318363f681aa6d8e41
+      md5: fd1c0b9098b1576996c9d1718e448519
       size: 32
       isexec: true
     - path: results/dcgan/weights
-      md5: 3733f72694727bcf2e870571628b1d05.dir
+      md5: d955bdee28abcee6926364d66bc6d26e.dir
       size: 58278000
       nfiles: 20
   train@cgan:
@@ -103,10 +103,10 @@ stages:
         n_epochs: 200
     outs:
     - path: cgan_time.json
-      md5: 600363a20c2fb78d5f499aa3b69245a1
+      md5: fcf38aa3fb731485cb9e7c301924d4a4
       size: 31
       isexec: true
     - path: results/cgan/weights
-      md5: 40f58e7dd2d96835672499a01d4ac8cf.dir
+      md5: 7b41d1b74f8efd349c165b73c76988ed.dir
       size: 121614970
       nfiles: 20
