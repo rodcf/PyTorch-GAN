@@ -6,6 +6,7 @@ import torchvision.transforms as transforms
 from torchvision.utils import save_image
 
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
 from torchvision import datasets
 from torch.autograd import Variable
 
@@ -100,6 +101,9 @@ def sample_image(n_row, epoch):
 #  Training
 # ----------
 
+# create tensorboard instance
+writer = SummaryWriter(log_dir=f'runs/{opt.model}')
+
 t1_start = perf_counter()
 
 for epoch in range(opt.n_epochs):
@@ -156,6 +160,8 @@ for epoch in range(opt.n_epochs):
         fake_loss = adversarial_loss(validity_fake, fake)
         d_loss = (real_loss + fake_loss) / 2
 
+        
+
         d_loss.backward()
         optimizer_D.step()
 
@@ -163,6 +169,11 @@ for epoch in range(opt.n_epochs):
             "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
             % (epoch, opt.n_epochs, i, len(dataloader), d_loss.item(), g_loss.item())
         )
+
+        # add generator's and discriminator losses to tensoarboard logger
+        if (i+1) == len(dataloader):
+            writer.add_scalar(f'Loss/{opt.model}_generator', g_loss.item(), epoch)
+            writer.add_scalar(f'Loss/{opt.model}_discriminator', d_loss.item(), epoch)
 
         if ((epoch + 1) % opt.checkpoints_interval == 0 or (epoch + 1) % opt.n_epochs == 0) and (i+1) == len(dataloader):
             if opt.model == 'cgan':

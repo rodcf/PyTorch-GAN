@@ -9,6 +9,7 @@ stages:
       outs:
         - results/${item}/weights
         - results/${item}/images
+        - runs/${item}/
       metrics:
         - ${item}_time.json:
             cache: false
