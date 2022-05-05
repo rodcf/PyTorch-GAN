@@ -11,6 +11,9 @@ from torchvision import datasets
 from torch.autograd import Variable
 
 import torch
+
+from sklearn.metrics import accuracy_score 
+
 import json
 
 from src.models import get_models
@@ -160,8 +163,6 @@ for epoch in range(opt.n_epochs):
         fake_loss = adversarial_loss(validity_fake, fake)
         d_loss = (real_loss + fake_loss) / 2
 
-        
-
         d_loss.backward()
         optimizer_D.step()
 
@@ -174,6 +175,12 @@ for epoch in range(opt.n_epochs):
         if (i+1) == len(dataloader):
             writer.add_scalar(f'Loss/{opt.model}_generator', g_loss.item(), epoch)
             writer.add_scalar(f'Loss/{opt.model}_discriminator', d_loss.item(), epoch)
+            # calculate discriminators accuracy
+            d_acc = accuracy_score(
+                np.array(list(map(lambda x: 1.0 if x >= 0.5 else 0.0, np.concatenate([validity_real.cpu().detach().numpy(),validity_fake.cpu().detach().numpy()])))),
+                np.concatenate([valid.cpu().detach().numpy(),fake.cpu().detach().numpy()]),
+            )
+            writer.add_scalar(f'Accuracy/{opt.model}_discriminator', d_acc, epoch)
 
         if ((epoch + 1) % opt.checkpoints_interval == 0 or (epoch + 1) % opt.n_epochs == 0) and (i+1) == len(dataloader):
             if opt.model == 'cgan':
