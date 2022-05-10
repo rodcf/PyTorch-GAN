@@ -22,8 +22,8 @@ stages:
     cmd: python3 -m src.calculate_crosslid
     deps:
     - path: results/
-      md5: 7a6dace087f0b328b056aef4496cef77.dir
-      size: 302742277
+      md5: 8fe7f4e3a2797e8299e11817152d288e.dir
+      size: 302760194
       nfiles: 90
     - path: src/calculate_crosslid.py
       md5: b8228b89be9647d22bd3dbcef5e7fba4
@@ -40,8 +40,8 @@ stages:
         - dcgan
     outs:
     - path: metrics.json
-      md5: 34fd21bbea05edff6a75c02e70c914fd
-      size: 109
+      md5: 77006b662d49fd71cfaa8ac2593af3b6
+      size: 110
       isexec: true
   train@gan:
     cmd: python3 -m src.train --model gan --n_epochs 200 --checkpoints_interval 20
@@ -89,19 +89,19 @@ stages:
         n_epochs: 200
     outs:
     - path: dcgan_time.json
-      md5: 110332fb34717f7b3acd85c36b7c332b
+      md5: bc3790a53616b5c69905466381e7ff6b
       size: 32
       isexec: true
     - path: results/dcgan/images
-      md5: 0199feb33010ed2776f342696893e084.dir
-      size: 496799
+      md5: c50dcea4294ccfd542b7bbddaf898dd7.dir
+      size: 509710
       nfiles: 10
     - path: results/dcgan/weights
-      md5: 488d70dce617421d21e71f9b70caf4c4.dir
+      md5: fd7058a9a3ac417af3823b58db0b941e.dir
       size: 58278000
       nfiles: 20
     - path: runs/dcgan/
-      md5: 461d4c53d29dc76c2fde87f872be1de3.dir
+      md5: 17bd97e54e2a02ff50ddb86e6ef901d6.dir
       size: 37450
       nfiles: 1
   train@cgan:
@@ -119,18 +119,18 @@ stages:
         n_epochs: 200
     outs:
     - path: cgan_time.json
-      md5: ca2a68e8448e9932e7989fc19cc669bd
+      md5: e33d1190ce6c136b389bf540a5da992f
       size: 31
       isexec: true
     - path: results/cgan/images
-      md5: 8db95a916d62180e19f0bdab8cad6baa.dir
-      size: 472150
+      md5: 73cbc1d2a060ec46b6b039d029f29d36.dir
+      size: 477156
       nfiles: 10
     - path: results/cgan/weights
-      md5: 9d6f26457f769724458a76a919d0e571.dir
+      md5: 47b15ffe5d5d24324903a696cbbe961f.dir
       size: 121614970
       nfiles: 20
     - path: runs/cgan/
-      md5: 33c3e522be77d917979d5d6b84cc622b.dir
+      md5: 8a876bdbe707d4c21ca5cd8af7619029.dir
       size: 36850
       nfiles: 1
