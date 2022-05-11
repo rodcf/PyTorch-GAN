@@ -1,6 +1,9 @@
 import argparse
 import os
-from matplotlib import pyplot as plt
+import matplotlib as mpl
+if os.environ.get('DISPLAY','') == '':
+    mpl.use('Agg')
+import matplotlib.pyplot as plt
 import numpy as np
 
 import torchvision.transforms as transforms
