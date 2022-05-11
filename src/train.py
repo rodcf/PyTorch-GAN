@@ -1,5 +1,6 @@
 import argparse
 import os
+from matplotlib import pyplot as plt
 import numpy as np
 
 import torchvision.transforms as transforms
@@ -12,7 +13,7 @@ from torch.autograd import Variable
 
 import torch
 
-from sklearn.metrics import accuracy_score 
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
 
 import json
 
@@ -44,6 +45,8 @@ results_location = f"{opt.results_location}/{opt.model}"
 os.makedirs(f"{results_location}/images", exist_ok=True)
 
 os.makedirs(f"{results_location}/weights", exist_ok=True)
+
+os.makedirs(f"{results_location}/confusion_matrix", exist_ok=True)
 
 img_shape = (opt.channels, opt.img_size, opt.img_size)
 
@@ -176,13 +179,25 @@ for epoch in range(opt.n_epochs):
             writer.add_scalar(f'Loss/{opt.model}_generator', g_loss.item(), epoch)
             writer.add_scalar(f'Loss/{opt.model}_discriminator', d_loss.item(), epoch)
             # calculate discriminators accuracy
-            d_acc = accuracy_score(
-                np.array(list(map(lambda x: 1.0 if x >= 0.5 else 0.0, np.concatenate([validity_real.cpu().detach().numpy(),validity_fake.cpu().detach().numpy()])))),
-                np.concatenate([valid.cpu().detach().numpy(),fake.cpu().detach().numpy()]),
-            )
+            y_true = np.array(list(map(lambda x: 1.0 if x >= 0.5 else 0.0, np.concatenate([validity_real.cpu().detach().numpy(),validity_fake.cpu().detach().numpy()]))))
+            y_pred = np.concatenate([valid.cpu().detach().numpy(),fake.cpu().detach().numpy()])
+            
+            d_acc = accuracy_score(y_true, y_pred)
+            d_prec = precision_score(y_true, y_pred)
+            d_rec = recall_score(y_true, y_pred)
+            d_f1 = f1_score(y_true, y_pred)
+
             writer.add_scalar(f'Accuracy/{opt.model}_discriminator', d_acc, epoch)
+            writer.add_scalar(f'Precision/{opt.model}_discriminator', d_prec, epoch)
+            writer.add_scalar(f'Recall/{opt.model}_discriminator', d_rec, epoch)
+            writer.add_scalar(f'F1/{opt.model}_discriminator', d_f1, epoch)
 
         if ((epoch + 1) % opt.checkpoints_interval == 0 or (epoch + 1) % opt.n_epochs == 0) and (i+1) == len(dataloader):
+            d_cm = confusion_matrix(y_true, y_pred)
+            disp = ConfusionMatrixDisplay(confusion_matrix=d_cm, display_labels=['fake','real'])
+            disp.plot()
+            plt.savefig(f'{results_location}/confusion_matrix/{epoch}.jpg')
+            
             if opt.model == 'cgan':
                 args = (z,labels)
                 input_names = ['input', 'labels']
