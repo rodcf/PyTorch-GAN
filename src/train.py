@@ -157,9 +157,6 @@ for epoch in range(opt.n_epochs):
         # ---------------------
 
         optimizer_D.zero_grad()
-
-
-        validity_fake = discriminator(gen_imgs.detach(), gen_labels) if opt.model=='cgan' else discriminator(gen_imgs.detach())
             
         # Measure discriminator's ability to classify real from generated samples
         validity_real = discriminator(real_imgs, labels) if opt.model=='cgan' else discriminator(real_imgs)
@@ -182,8 +179,8 @@ for epoch in range(opt.n_epochs):
             writer.add_scalar(f'Loss/{opt.model}_generator', g_loss.item(), epoch)
             writer.add_scalar(f'Loss/{opt.model}_discriminator', d_loss.item(), epoch)
             # calculate discriminators accuracy
-            y_true = np.array(list(map(lambda x: 1.0 if x >= 0.5 else 0.0, np.concatenate([validity_real.cpu().detach().numpy(),validity_fake.cpu().detach().numpy()]))))
-            y_pred = np.concatenate([valid.cpu().detach().numpy(),fake.cpu().detach().numpy()])
+            y_true = np.concatenate([valid.cpu().detach().numpy(),fake.cpu().detach().numpy()])
+            y_pred = np.array(list(map(lambda x: 1.0 if x >= 0.5 else 0.0, np.concatenate([validity_real.cpu().detach().numpy(),validity_fake.cpu().detach().numpy()]))))
             
             d_acc = accuracy_score(y_true, y_pred)
             d_prec = precision_score(y_true, y_pred)
