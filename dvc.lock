@@ -22,8 +22,8 @@ stages:
     cmd: python3 -m src.calculate_crosslid
     deps:
     - path: results/
-      md5: 510153cff6f75e27ec729476137ca468.dir
-      size: 258402343
+      md5: 85e0f3b78992683d303164260ffd52ae.dir
+      size: 262262507
       nfiles: 120
     - path: src/calculate_crosslid.py
       md5: b8228b89be9647d22bd3dbcef5e7fba4
@@ -40,99 +40,99 @@ stages:
         - dcgan
     outs:
     - path: metrics.json
-      md5: 2778bd5d0911145cf92eb8d8cea5887d
+      md5: df36c8063ecf0f39d05cab942ba7a1ed
       size: 108
       isexec: true
   train@gan:
     cmd: python3 -m src.train --model gan --n_epochs 200 --checkpoints_interval 20
-      --latent_dim 2
+      --latent_dim 10
     deps:
     - path: src/models.py
       md5: bad6ef81a3d92f6530229eaf78b9633b
       size: 6708
     - path: src/train.py
-      md5: ac219f48129a17c2699558ec58fe6bf7
-      size: 10803
+      md5: 70ca007ff5775b2f3be0c24308006d7f
+      size: 10850
     params:
       params.yaml:
         gan: gan
         n_epochs: 200
     outs:
     - path: gan_time.json
-      md5: cc7301e571ea25667609f6d63d12301f
+      md5: 7516576cc0a34287553ea6bfb114c738
       size: 30
       isexec: true
     - path: results/gan/images
-      md5: 217721f01ba93e738c9f239cd6cff962.dir
-      size: 451523
+      md5: ebf0cdc3f97c6d20433f0beb5d3f9f1f.dir
+      size: 467839
       nfiles: 10
     - path: results/gan/weights
-      md5: 59277395529bbacf29500bd671c28420.dir
-      size: 120465970
+      md5: 96f9ade7ff96d7372b9efbc7861b18c0.dir
+      size: 120547890
       nfiles: 20
     - path: runs/gan/
-      md5: a08c3bdc09da3adacb9a6fda808bd4a3.dir
+      md5: c360ce8b03596855d2e9f4bfe99c06a0.dir
       size: 73460
       nfiles: 1
   train@dcgan:
     cmd: python3 -m src.train --model dcgan --n_epochs 200 --checkpoints_interval
-      20 --latent_dim 2
+      20 --latent_dim 10
     deps:
     - path: src/models.py
       md5: bad6ef81a3d92f6530229eaf78b9633b
       size: 6708
     - path: src/train.py
-      md5: ac219f48129a17c2699558ec58fe6bf7
-      size: 10803
+      md5: 70ca007ff5775b2f3be0c24308006d7f
+      size: 10850
     params:
       params.yaml:
         dcgan: dcgan
         n_epochs: 200
     outs:
     - path: dcgan_time.json
-      md5: 73584ac95b1bc819fab5845f71f27d7b
+      md5: 59fea905b2bd06313df8f6f199306e2a
       size: 32
       isexec: true
     - path: results/dcgan/images
-      md5: a4ee8c837bf599e76d13188774c71bb7.dir
-      size: 514709
+      md5: 2b9202295948640d634b26b1bdc0deae.dir
+      size: 496043
       nfiles: 10
     - path: results/dcgan/weights
-      md5: da76eb8e7c954be8e35a479702e3657e.dir
-      size: 15252050
+      md5: a044c6459febe933bbadd3bbe8ba61ad.dir
+      size: 18764370
       nfiles: 20
     - path: runs/dcgan/
-      md5: a72f959f87c230976d9fe043ba6583d9.dir
+      md5: ba4a2ee704deaf1ba599cceae9a067b8.dir
       size: 75860
       nfiles: 1
   train@cgan:
     cmd: python3 -m src.train --model cgan --n_epochs 200 --checkpoints_interval 20
-      --latent_dim 2
+      --latent_dim 10
     deps:
     - path: src/models.py
       md5: bad6ef81a3d92f6530229eaf78b9633b
       size: 6708
     - path: src/train.py
-      md5: ac219f48129a17c2699558ec58fe6bf7
-      size: 10803
+      md5: 70ca007ff5775b2f3be0c24308006d7f
+      size: 10850
     params:
       params.yaml:
         cgan: cgan
         n_epochs: 200
     outs:
     - path: cgan_time.json
-      md5: 215413709c134f6e18f09b67187fb225
+      md5: 5d964e747ca85f163266a344ed0bf0d4
       size: 31
       isexec: true
     - path: results/cgan/images
-      md5: 1377be2843ebc7a5428c8e745309d3a8.dir
-      size: 304044
+      md5: c93d98c17037cd5c1ecb6211cec933fc.dir
+      size: 482262
       nfiles: 10
     - path: results/cgan/weights
-      md5: 845914a721622fe1faf73a7dee3af9a0.dir
-      size: 120611430
+      md5: bfab6f84bf9071fddacc06bcb294556a.dir
+      size: 120693350
       nfiles: 20
     - path: runs/cgan/
-      md5: 6314a15e396b1aa9decd3c684a5343e1.dir
+      md5: 76410c948199480271398b8a0b054c23.dir
       size: 74660
       nfiles: 1
