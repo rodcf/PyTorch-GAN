@@ -2,7 +2,7 @@ stages:
   train:
     foreach: ${models}
     do:
-      cmd: python3 -m src.train --model ${item} --n_epochs ${n_epochs} --checkpoints_interval ${checkpoints_interval}
+      cmd: python3 -m src.train --model ${item} --n_epochs ${n_epochs} --checkpoints_interval ${checkpoints_interval} --latent_dim ${latent_dim}
       deps:
         - src/train.py
         - src/models.py

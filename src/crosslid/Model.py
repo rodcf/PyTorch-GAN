@@ -1,9 +1,14 @@
 import numpy as np
 import onnx
 import onnxruntime as ort
+import yaml
+
 from onnx2keras import onnx_to_keras
 
 from src.crosslid.utilities import scale_value
+
+with open("params.yaml", 'r') as fd:
+    params = yaml.safe_load(fd)
 
 def get_ort_session(onnx_path:str):
     onnx_model = onnx.load(onnx_path)
@@ -20,11 +25,11 @@ def get_fake_images(onnx_path:str, model:str, size:int=20000):
     print('Generating fake images using trained model:', model.upper())
     if model != 'cgan':
         model = get_onnx_model(onnx_path)
-        noise = np.random.normal(size=(size, 100))
+        noise = np.random.normal(size=(size, params['latent_dim']))
         images = model.predict(noise)
     else:
         ort_session = get_ort_session(onnx_path)
-        noise = np.random.normal(size=(size, 100)).astype(np.float32)
+        noise = np.random.normal(size=(size, params['latent_dim'])).astype(np.float32)
         labels = np.random.randint(0, 10, size)
         images = ort_session.run(None, {'input':noise, 'labels': labels})
     images = scale_value(images, [0, 255.0])
