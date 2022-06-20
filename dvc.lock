@@ -22,8 +22,8 @@ stages:
     cmd: python3 -m src.calculate_crosslid
     deps:
     - path: results/
-      md5: fa2c981e3ec373b49c85941214a58702.dir
-      size: 262304131
+      md5: 3689c4d4d048b8ee2f97fbec84a640d1.dir
+      size: 303710364
       nfiles: 120
     - path: src/calculate_crosslid.py
       md5: b8228b89be9647d22bd3dbcef5e7fba4
@@ -40,16 +40,16 @@ stages:
         - dcgan
     outs:
     - path: metrics.json
-      md5: 2e36d732aca184d61cb06529e8927f23
+      md5: a19c274d076ab85fde400d3a7e934008
       size: 109
       isexec: true
   train@gan:
     cmd: python3 -m src.train --model gan --n_epochs 200 --checkpoints_interval 20
-      --latent_dim 10
+      --latent_dim 100
     deps:
     - path: src/models.py
-      md5: bad6ef81a3d92f6530229eaf78b9633b
-      size: 6708
+      md5: cde65e88ee351dd01231b7f40ee579ff
+      size: 6776
     - path: src/train.py
       md5: ac219f48129a17c2699558ec58fe6bf7
       size: 10803
@@ -59,28 +59,28 @@ stages:
         n_epochs: 200
     outs:
     - path: gan_time.json
-      md5: e7b03ef6e11183b7bd681b5d8de30fa0
+      md5: 74602521e7f822d078e4ca7641491f88
       size: 30
       isexec: true
     - path: results/gan/images
-      md5: 4f829badcc109750fe10819c416ee986.dir
-      size: 495572
+      md5: f1d1f103b1488dd7bd67e04456ec3ca3.dir
+      size: 554549
       nfiles: 10
     - path: results/gan/weights
-      md5: 2dd80fcd85a1da6338c9179c41158380.dir
-      size: 120547890
+      md5: 9de9222f185dab4d64547e663f833262.dir
+      size: 121469510
       nfiles: 20
     - path: runs/gan/
-      md5: 17cd62e3f9d8644daeef4f687a368368.dir
+      md5: ba850ba020318a0f05700105b28c5c92.dir
       size: 73460
       nfiles: 1
   train@dcgan:
     cmd: python3 -m src.train --model dcgan --n_epochs 200 --checkpoints_interval
-      20 --latent_dim 10
+      20 --latent_dim 100
     deps:
     - path: src/models.py
-      md5: bad6ef81a3d92f6530229eaf78b9633b
-      size: 6708
+      md5: cde65e88ee351dd01231b7f40ee579ff
+      size: 6776
     - path: src/train.py
       md5: ac219f48129a17c2699558ec58fe6bf7
       size: 10803
@@ -90,28 +90,28 @@ stages:
         n_epochs: 200
     outs:
     - path: dcgan_time.json
-      md5: 488bf887ce0202d54fa2fc1a71b5dba1
+      md5: d353f10ac5f651b57740f664dcb2ab84
       size: 32
       isexec: true
     - path: results/dcgan/images
-      md5: d174a821a1a67512f11f619e2a5e9623.dir
-      size: 497783
+      md5: 47c1731017e6d4c3e1125742f14cbd87.dir
+      size: 507835
       nfiles: 10
     - path: results/dcgan/weights
-      md5: fa2464140073bd622c6d6005a19370bc.dir
-      size: 18764370
+      md5: 366183c3d5b1c0550c402927e61ad435.dir
+      size: 58278000
       nfiles: 20
     - path: runs/dcgan/
-      md5: 72dbeecea65e313ef6f679f342b2a885.dir
+      md5: 00486dfd8640a61e3c355e1626afac0b.dir
       size: 75860
       nfiles: 1
   train@cgan:
     cmd: python3 -m src.train --model cgan --n_epochs 200 --checkpoints_interval 20
-      --latent_dim 10
+      --latent_dim 100
     deps:
     - path: src/models.py
-      md5: bad6ef81a3d92f6530229eaf78b9633b
-      size: 6708
+      md5: cde65e88ee351dd01231b7f40ee579ff
+      size: 6776
     - path: src/train.py
       md5: ac219f48129a17c2699558ec58fe6bf7
       size: 10803
@@ -121,18 +121,18 @@ stages:
         n_epochs: 200
     outs:
     - path: cgan_time.json
-      md5: 25fb86536a3a6655ff3613f1f8173d63
+      md5: 6cc8fc65b899030a2d7befd9a0cc8a5b
       size: 31
       isexec: true
     - path: results/cgan/images
-      md5: 03670622716867a3e97feda9fafa6917.dir
-      size: 479032
+      md5: 399908ae96597c282104b247f10bef11.dir
+      size: 473540
       nfiles: 10
     - path: results/cgan/weights
-      md5: 3fcd269a9329bd87b11298086cbd953a.dir
-      size: 120693350
+      md5: c6f9b6f6adcbc330c7923fd00aa218f5.dir
+      size: 121614970
       nfiles: 20
     - path: runs/cgan/
-      md5: 179268be68618fc520dd3b1cb69da0d4.dir
+      md5: 914a740b1a3150d57ca70ce0ee2e032d.dir
       size: 74660
       nfiles: 1
