@@ -44,10 +44,10 @@ def get_models(model, image_shape, latent_dim, n_classes=10):
             self.model = nn.Sequential(
                 nn.Linear(int(np.prod(image_shape)), 512),
                 nn.LeakyReLU(0.2, inplace=True),
-                nn.Dropout(0.4),
+                # nn.Dropout(0.4),
                 nn.Linear(512, 256),
                 nn.LeakyReLU(0.2, inplace=True),
-                nn.Dropout(0.4),
+                # nn.Dropout(0.4),
                 nn.Linear(256, 1),
                 nn.Sigmoid(),
             )
