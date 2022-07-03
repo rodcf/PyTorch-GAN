@@ -22,8 +22,8 @@ stages:
     cmd: python3 -m src.calculate_crosslid
     deps:
     - path: results/
-      md5: 24bb875bf4d1cb7ddc4f602060d92d95.dir
-      size: 258572571
+      md5: c5e66d33775712a1d84a228746dad382.dir
+      size: 303666885
       nfiles: 120
     - path: src/calculate_crosslid.py
       md5: b8228b89be9647d22bd3dbcef5e7fba4
@@ -35,19 +35,21 @@ stages:
     params:
       params.yaml:
         models:
+        - gan
         - cgan
+        - dcgan
     outs:
     - path: metrics.json
-      md5: 34f9988d58bd2b62237b2eb1815b71a9
-      size: 36
+      md5: 2cad2301e6e87df197b56558e964362a
+      size: 109
       isexec: true
   train@gan:
     cmd: python3 -m src.train --model gan --n_epochs 200 --checkpoints_interval 20
-      --latent_dim 2
+      --latent_dim 100
     deps:
     - path: src/models.py
-      md5: d32545b4e0316df15013eac01f4845e3
-      size: 6780
+      md5: e834c4f57598e1d00ef52e38f0b7fa00
+      size: 6886
     - path: src/train.py
       md5: ac219f48129a17c2699558ec58fe6bf7
       size: 10803
@@ -57,28 +59,28 @@ stages:
         n_epochs: 200
     outs:
     - path: gan_time.json
-      md5: 282fc927c714843b282b2df4cc16e336
+      md5: 1aa6c6e4316bd5d525e373f7ad585127
       size: 30
       isexec: true
     - path: results/gan/images
-      md5: 58ecd941951c6888dcd947e04c9156fc.dir
-      size: 442440
+      md5: 978c68c3dab470d6f7acb3b89f94984a.dir
+      size: 564155
       nfiles: 10
     - path: results/gan/weights
-      md5: f24d28f54a90196dbb9d5ac943f7d91f.dir
-      size: 120465970
+      md5: 18beb55d3ba83e4115a0c0474e29726e.dir
+      size: 121469510
       nfiles: 20
     - path: runs/gan/
-      md5: fb4f6977280e6ac3d5bdf3e30d9f1d7c.dir
+      md5: c7dbbe0046270bc19e0f4a1c287793fa.dir
       size: 73460
       nfiles: 1
   train@dcgan:
     cmd: python3 -m src.train --model dcgan --n_epochs 200 --checkpoints_interval
-      20 --latent_dim 2
+      20 --latent_dim 100
     deps:
     - path: src/models.py
-      md5: d32545b4e0316df15013eac01f4845e3
-      size: 6780
+      md5: e834c4f57598e1d00ef52e38f0b7fa00
+      size: 6886
     - path: src/train.py
       md5: ac219f48129a17c2699558ec58fe6bf7
       size: 10803
@@ -88,28 +90,28 @@ stages:
         n_epochs: 200
     outs:
     - path: dcgan_time.json
-      md5: 3e465b1ff12d77ebfe644dbde51da607
+      md5: a696aeac20e4a3fa20e4434d4ea1b8b3
       size: 32
       isexec: true
     - path: results/dcgan/images
-      md5: e2429b7911e2f442e75eb9ebb70c228a.dir
-      size: 545876
+      md5: 2404fe6081d0700c78ce3e20c449e153.dir
+      size: 461559
       nfiles: 10
     - path: results/dcgan/weights
-      md5: 9505c147612b08c77f490524ee7d7df1.dir
-      size: 15252050
+      md5: 77c4386de603e5189c3eb1f8a862a061.dir
+      size: 58278000
       nfiles: 20
     - path: runs/dcgan/
-      md5: 498e7d04249477c56aad8a91e84ddb56.dir
+      md5: eda16fcd553edbd6235b4eaf95abdd37.dir
       size: 75860
       nfiles: 1
   train@cgan:
     cmd: python3 -m src.train --model cgan --n_epochs 200 --checkpoints_interval 20
-      --latent_dim 2
+      --latent_dim 100
     deps:
     - path: src/models.py
-      md5: d32545b4e0316df15013eac01f4845e3
-      size: 6780
+      md5: e834c4f57598e1d00ef52e38f0b7fa00
+      size: 6886
     - path: src/train.py
       md5: ac219f48129a17c2699558ec58fe6bf7
       size: 10803
@@ -119,18 +121,18 @@ stages:
         n_epochs: 200
     outs:
     - path: cgan_time.json
-      md5: 49fd1186b25f16883ed154749cff6a46
+      md5: dfb2076d02f2b12aad1d83922e347197
       size: 31
       isexec: true
     - path: results/cgan/images
-      md5: fd78e3060e3e7ac3acb2d3422907d714.dir
-      size: 436977
+      md5: eaa53e3061cb109438096f69fa925f9e.dir
+      size: 453344
       nfiles: 10
     - path: results/cgan/weights
-      md5: 2b98676d7cddbcf73915de526c96eb80.dir
-      size: 120611430
+      md5: d9272435f91cbfae650064340f36d82c.dir
+      size: 121614970
       nfiles: 20
     - path: runs/cgan/
-      md5: 47db367ad79cfbecdb2fcfd470afe11a.dir
+      md5: b149950120be805d0c3eb9e558993d58.dir
       size: 74660
       nfiles: 1

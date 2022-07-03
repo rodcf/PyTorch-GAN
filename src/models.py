@@ -44,10 +44,10 @@ def get_models(model, image_shape, latent_dim, n_classes=10):
             self.model = nn.Sequential(
                 nn.Linear(int(np.prod(image_shape)), 512),
                 nn.LeakyReLU(0.2, inplace=True),
-                # nn.Dropout(0.4),
+                nn.Dropout(0.4),
                 nn.Linear(512, 256),
                 nn.LeakyReLU(0.2, inplace=True),
-                # nn.Dropout(0.4),
+                nn.Dropout(0.4),
                 nn.Linear(256, 1),
                 nn.Sigmoid(),
             )
@@ -94,7 +94,8 @@ def get_models(model, image_shape, latent_dim, n_classes=10):
             nc = image_shape[0]
             
             def discriminator_block(in_filters, out_filters, bn=True):
-                block = [nn.Conv2d(in_filters, out_filters, 3, 2, 1), nn.LeakyReLU(0.2, inplace=True), nn.Dropout2d(0.25)]
+                # block = [nn.Conv2d(in_filters, out_filters, 3, 2, 1), nn.LeakyReLU(0.2, inplace=True), nn.Dropout2d(0.25)]
+                block = [nn.Conv2d(in_filters, out_filters, 3, 2, 1), nn.LeakyReLU(0.2, inplace=True)]
                 if bn:
                     block.append(nn.BatchNorm2d(out_filters, 0.8))
                 return block
@@ -157,10 +158,10 @@ def get_models(model, image_shape, latent_dim, n_classes=10):
                 nn.Linear(n_classes + int(np.prod(image_shape)), 512),
                 nn.LeakyReLU(0.2, inplace=True),
                 nn.Linear(512, 512),
-                nn.Dropout(0.4),
+                # nn.Dropout(0.4),
                 nn.LeakyReLU(0.2, inplace=True),
                 nn.Linear(512, 512),
-                nn.Dropout(0.4),
+                # nn.Dropout(0.4),
                 nn.LeakyReLU(0.2, inplace=True),
                 nn.Linear(512, 1),
             )
